@@ -1,0 +1,104 @@
+App.js
+
+import React from "react";
+import "./index.css";
+import Counter from "./components/Counter";
+import Todolist from "./components/Todolist";
+import { v4 as uuid } from 'uuid';
+import { getValue } from "@testing-library/user-event/dist/utils";
+class App extends React.Component{
+  constructor(){
+    super();
+    this.state={
+      todos:[]
+    };
+  }
+  render(){
+    const addTodo=(value)=>{
+      const newTodo={
+        id:uuid(),
+        completed:false,
+        title:value
+
+      };
+     const updatedArray=[...this.state.todos,newTodo];
+     this.setState({
+      todos:updatedArray
+     });
+
+  
+    };
+    const deleteTodo=(todoId)=>{
+      const updatedArray=this.state.todos.filter(
+        (todo)=>todo.id!==todoId
+      );
+      this.setState({
+        todos:updatedArray
+      });
+
+    };
+  return(
+    <div className="App">
+  <Counter addTodo={addTodo}/>
+  <Todolist todos={this.state.todos} deleteTodo={deleteTodo}/>
+  </div>
+  );
+  }
+
+}
+export default App;
+--------------------------------------------
+counter.js
+import React from "react";
+class Counter extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      todo: "",
+    };
+  }
+  render() {
+    const updateTodo = (e) => {
+      this.setState({
+        todo: e.target.value
+      });
+    };
+    const addTodoList=(e)=>{
+        e.preventDefault();
+        this.props.addTodo(this.state.todo);
+    };
+    return (
+      <form onSubmit={addTodoList}>
+        <input
+          placeholder="Enter data"
+          value={this.state.todo}
+          onChange={updateTodo}
+        />
+        <button type="Submit">Add Item</button>
+      </form>
+    );
+  }
+}
+export default Counter;
+----------------------------------------------------------------
+Todolist.js
+import React from "react";
+class Todolist extends React.Component {
+  render() {
+    return (
+      <>
+        <ul>
+          {this.props.todos.map((todo) => (
+            <li key={todo.id}>
+              {todo.title}
+              <button onClick={()=>{
+                this.props.deleteTodo(todo.id);
+                }}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
+}
+export default Todolist;
