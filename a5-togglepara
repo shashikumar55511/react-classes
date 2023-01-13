@@ -1,0 +1,39 @@
+app.js
+
+import React from "react";
+import Toggle from "./components/Toggle";
+class App extends React.Component{
+  render(){
+    return<Toggle />
+  }
+}
+export default App;
+
+------------------------------------
+Toogle.js
+
+
+import React from "react";
+class Toggle extends React.Component{
+    constructor(){
+        super();
+        this.state={
+                para:true
+        };
+    }
+    render(){
+        const hidePara=()=>{
+            this.setState({
+                para:!this.state.para
+            });
+        }
+        return(
+            <div>
+                {this.state.para?
+                <h1>this is shashi developer</h1>:null}
+                <button onClick={hidePara}>{this.state.para?"Hide ":"show "}para</button>
+            </div>
+        )
+    }
+}
+export default Toggle;
