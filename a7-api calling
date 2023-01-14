@@ -1,0 +1,60 @@
+app.js
+
+import React from 'react';
+import './App.css';
+import Api from './Components/Api';
+
+function App() {
+  return (
+    <Api />
+  );
+}
+
+export default App;
+-----------------------
+Api.js
+
+
+import React from "react";
+class Api extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      photos: [],
+      loading: false,
+    };
+  }
+  componentDidMount() {
+    this.setState({
+      loading: true,
+    });
+
+    fetch("https://jsonplaceholder.typicode.com/photos")
+      .then((resp) => resp.json())
+      .then((response) => {
+        this.setState({
+          photos: response,
+          loading: false,
+        });
+      });
+  }
+  render() {
+    if (this.state.loading) {
+      return <h1>loading</h1>;
+    }
+    return (
+      <>
+        {this.state.photos.map((photo) => {
+          return (
+            <div  key={photo.id}>
+            
+              <img src={photo.url} height={80} width={80} />
+            <div>{photo.title}</div>
+            </div>
+          );
+        })}
+      </>                                                          
+    );
+  }
+}
+export default Api;
