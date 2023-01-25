@@ -1,0 +1,150 @@
+import React from "react";
+class Input extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      fullname: "",
+      email: "",
+      gender: "",
+      phonenumber: "",
+      password: "",
+      userName: "",
+      errorMessage: "",
+    };
+  }
+  render() {
+    const nameChanger = (e) => {
+      this.setState({
+        fullname: e.target.value,
+      });
+    };
+
+    const emailChanger = (e) => {
+      this.setState({
+        email: e.target.value,
+      });
+    };
+    const genderChanger = (e) => {
+      this.setState({
+        gender: e.target.value,
+      });
+    };
+    const phoneNumberChanger = (e) => {
+      this.setState({
+        phonenumber: e.target.value,
+      });
+    };
+    const passwordChanger = (e) => {
+      this.setState({
+        password: e.target.value,
+      });
+    };
+    const submitChanger = (e) => {
+      e.preventDefault();
+      const alphanumeric = /^[0-9a-zA-Z ]+$/;
+      const numbers = /^\d+$/;
+      if (
+        !this.state.fullname ||
+        !this.state.email ||
+        !this.state.gender ||
+        !this.state.phonenumber ||
+        !this.state.password
+      ) {
+        this.setState({
+          error: "All fields are mandatory",
+        });
+        return;
+      }
+      if (this.state.email.indexOf("@") < 1) {
+        this.setState({ 
+          errorMessage: "Email must contain @", userName: "" 
+        });
+        return;
+      }
+      const user = this.state.email.substring(0, this.state.email.indexOf("@"));
+      this.setState({
+        userName: user,
+      });
+      if (this.state.email.indexOf("@") < 1) {
+        this.setState({ errorMessage: "Email must contain @", userName: "" });
+        return;
+      }
+  
+      if (!this.state.gender) {
+        this.setState({
+          errorMessage: "Please identify as male, female or others",
+          userName: "",
+        });
+        return;
+      }
+      if (!numbers.test(this.state.phNo)) {
+        this.setState({
+          errorMessage: "Phone Number must contain only numbers",
+          userName: "",
+        });
+        return;
+      }
+      if (this.state.password.length < 6) {
+        this.setState({
+          errorMessage: "Password must contain atleast 6 letters",
+          userName: "",
+        });
+        return;
+      }
+    };
+    return (
+      <>
+        <form onSubmit={submitChanger}>
+          <label>Name :</label>
+          <input
+            data-testid="name"
+            placeholder="Name"
+            value={this.state.fullname}
+            onChange={nameChanger}
+          />
+          <br />
+          <input
+            placeholder="email"
+            data-testid="email"
+            value={this.state.email}
+            onChange={emailChanger}
+          />
+          <br />
+          <select
+            data-testid="gender"
+            value={this.state.gender}
+            onChange={genderChanger}
+          >
+            <option>select</option>
+            <option value="male">Male</option>
+            <option value="female">Fe-Male</option>
+            <option value="other">Other</option>
+          </select>
+          <br />
+          <input
+            placeholder="phone number"
+            data-testid="phonenumber"
+            value={this.state.phonenumber}
+            onChange={phoneNumberChanger}
+          />
+          <br />
+          <input
+            placeholder="password"
+            data-testid="password"
+            value={this.state.password}
+            onChange={passwordChanger}
+          />
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+
+        {this.state.error ? (
+          <div style={{ color: "red" }}>{this.state.error}</div>
+        ) : null}
+        {this.state.userName ? <div>hello: {this.state.userName}</div> : null}
+        {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : null}
+      </>
+    );
+  }
+}
+export default Input;
